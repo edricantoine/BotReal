@@ -74,7 +74,16 @@ class twentyOne:
         await self.checkForWinner()
 
     async def checkForWinner(self):
-        if self.__s1 > 21 and self.__s2 <= 21:
+        if self.__s1 == 21:
+            await self.print()
+            await self.__channel.send('Player 1 has exactly 21! Player 1 wins.')
+            await self.stop()
+        elif self.__s2 == 21:
+            await self.print()
+            await self.__channel.send('Player 2 has exactly 21! Player 2 wins.')
+            await self.stop()
+
+        elif self.__s1 > 21 and self.__s2 <= 21:
             await self.print()
             await self.__channel.send('Player 1 went over 21! Player 2 wins.')
             await self.stop()
