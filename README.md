@@ -41,6 +41,11 @@ When it is your turn in 21, you type this if you want to hit.
 
 When it is your turn in 21, you type this if you want to stay.
 
+!rng [number]
+
+Picks a random number from 1 to [number], and messages it.
+Obviously, only works when [number] actually is a number.
+
 
 COPYPASTA SUPPORT
 
