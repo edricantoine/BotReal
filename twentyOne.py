@@ -14,6 +14,14 @@ class twentyOne:
         self.__2hors = None
         self.__s1 = 0
         self.__s2 = 0
+        self.__p1name = "Player 1"
+        self.__p2name = "Player 2"
+
+    async def set_name_1(self, name):
+        self.__p1name = name
+
+    async def set_name_2(self, name):
+        self.__p2name = name
 
     async def setChannel(self, channel):
         self.__channel = channel
@@ -57,10 +65,10 @@ class twentyOne:
     async def turn1(self):
 
         await self.print()
-        await self.__channel.send('Player 1. Will you hit or stay?')
+        await self.__channel.send(self.__p1name + '. Will you hit or stay?')
 
     async def turn2(self):
-        await self.__channel.send('Player 2. Will you hit or stay?')
+        await self.__channel.send(self.__p2name + '. Will you hit or stay?')
 
     async def addToScores(self):
         rand1 = random.randrange(1, 10)
@@ -76,21 +84,21 @@ class twentyOne:
     async def checkForWinner(self):
         if self.__s1 == 21:
             await self.print()
-            await self.__channel.send('Player 1 has exactly 21! Player 1 wins.')
+            await self.__channel.send(self.__p1name + ' has exactly 21! ' + self.__p1name + ' wins.')
             await self.stop()
         elif self.__s2 == 21:
             await self.print()
-            await self.__channel.send('Player 2 has exactly 21! Player 2 wins.')
+            await self.__channel.send(self.__p2name + ' has exactly 21! ' + self.__p2name + ' wins.')
             await self.stop()
 
         elif self.__s1 > 21 and self.__s2 <= 21:
             await self.print()
-            await self.__channel.send('Player 1 went over 21! Player 2 wins.')
+            await self.__channel.send(self.__p1name + ' went over 21! ' + self.__p2name + ' wins.')
             await self.stop()
 
         elif self.__s2 > 21 and self.__s1 <= 21:
             await self.print()
-            await self.__channel.send('Player 2 went over 21! Player 1 wins.')
+            await self.__channel.send(self.__p2name + ' went over 21! ' + self.__p1name + ' wins.')
             await self.stop()
         elif self.__s2 > 21 and self.__s1 > 21:
             await self.print()
@@ -117,7 +125,7 @@ class twentyOne:
     async def print(self):
         if self.__running:
             await self.__channel.send('Game scores:')
-            await self.__channel.send('Player 1: {}'.format(self.__s1))
-            await self.__channel.send('Player 2: {}'.format(self.__s2))
+            await self.__channel.send(self.__p1name + ': {}'.format(self.__s1))
+            await self.__channel.send(self.__p2name + ': {}'.format(self.__s2))
         else:
             await self.__channel.send('No game is currently active.')

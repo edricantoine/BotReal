@@ -18,6 +18,8 @@ sadStatements = [
     "Cry more"
 ]
 GUILD = 'Yes.'
+playerOne = None
+playerTwo = None
 
 
 @client.event
@@ -35,13 +37,14 @@ async def on_ready():
     members = '\n - '.join([member.name for member in guild.members])
     print(f'Guild Members:\n - {members}')
 
-    for channel in guild.text_channels:
-        await channel.send("I am here to make your lives miserable")
+
 
 
 @client.event
 async def on_message(message):
     global gameBeingPlayed
+    global playerOne
+    global playerTwo
     if message.author == client.user:
         return
 
@@ -81,34 +84,75 @@ async def on_message(message):
         await twentyOne.start(message.channel)
         gameBeingPlayed = True
 
-    if msg.startswith('!stop21'):
+    if playerOne is not None and playerTwo is not None and msg.startswith('!stop21') and \
+            (message.author.name == playerOne.name or message.author.name == playerTwo.name):
         await twentyOne.setChannel(message.channel)
         await twentyOne.stop()
         gameBeingPlayed = False
 
-    if msg.startswith('!score21'):
+    if playerOne is not None and playerTwo is not None and msg.startswith('!score21') and \
+            (message.author.name == playerOne.name or message.author.name == playerTwo.name):
         await twentyOne.setChannel(message.channel)
         await twentyOne.print()
 
     if msg.startswith('!hit') and twentyOne.started():
         if twentyOne.isp1turn():
-            await twentyOne.onehit()
-            await twentyOne.changeTurntoP2()
-            await twentyOne.turn2()
+
+            if playerOne is None:
+                playerOne = message.author
+                await twentyOne.set_name_1(message.author.name)
+                await twentyOne.onehit()
+                await twentyOne.changeTurntoP2()
+                await twentyOne.turn2()
+            else:
+                if message.author.name == playerOne.name:
+                    await twentyOne.onehit()
+                    await twentyOne.changeTurntoP2()
+                    await twentyOne.turn2()
+
         else:
-            await twentyOne.twohit()
-            await twentyOne.changeTurntoP1()
-            await twentyOne.addToScores()
+
+            if playerTwo is None:
+                playerTwo = message.author
+                print (playerTwo.name)
+                await twentyOne.set_name_2(message.author.name)
+                await twentyOne.twohit()
+                await twentyOne.changeTurntoP1()
+                await twentyOne.addToScores()
+            else:
+                if message.author.name == playerTwo.name:
+                    await twentyOne.twohit()
+                    await twentyOne.changeTurntoP1()
+                    await twentyOne.addToScores()
 
     if msg.startswith('!stay') and twentyOne.started():
         if twentyOne.isp1turn():
-            await twentyOne.onestay()
-            await twentyOne.changeTurntoP2()
-            await twentyOne.turn2()
+
+            if playerOne is None:
+                playerOne = message.author
+                await twentyOne.set_name_1(message.author.name)
+                await twentyOne.onestay()
+                await twentyOne.changeTurntoP2()
+                await twentyOne.turn2()
+            else:
+                if message.author.name == playerOne.name:
+                    await twentyOne.onestay()
+                    await twentyOne.changeTurntoP2()
+                    await twentyOne.turn2()
+
         else:
-            await twentyOne.twostay()
-            await twentyOne.changeTurntoP1()
-            await twentyOne.addToScores()
+
+            if playerTwo is None:
+                playerTwo = message.author
+                await twentyOne.set_name_2(message.author.name)
+                await twentyOne.twostay()
+                await twentyOne.changeTurntoP1()
+                await twentyOne.addToScores()
+            else:
+                if message.author.name == playerTwo.name:
+                    await twentyOne.twostay()
+                    await twentyOne.changeTurntoP1()
+                    await twentyOne.addToScores()
 
     if any(word in msg for word in happyWords):
         await message.channel.send(random.choice(sadStatements))
@@ -218,4 +262,4 @@ async def on_message(message):
                                    "suffering.")
 
 
-client.run('TOKEN')
+client.run('token')
