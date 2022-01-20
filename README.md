@@ -4,7 +4,7 @@ By Edric Antoine
 
 A simple Discord bot written in Python. Download this if you want to make your usage of Discord as cringe and unfunny as possible lmao
 
-WHAT IT DO????
+What does it do?
 
 -Greets users very kindly upon connecting to Discord
 -Can play a game of 21 (more games to be added soon)
@@ -47,8 +47,5 @@ Picks a random number from 1 to [number], and messages it.
 Obviously, only works when [number] actually is a number.
 
 
-COPYPASTA SUPPORT
-
-Yall can figure out the copypasta keywords yourselves lmao
 
 
